@@ -81,9 +81,23 @@ async function deleteTodo(id) {
 }
 
 // 完了、未完了のトグル処理
-async function toggleTodo(id, isCompleted) {
+async function toggleTodo(id) {
     let connection;
-    // isCompleted は 0 または 1
+    try {
+        connection = await pool.getConnection();
+        const query = `
+            UPDATE mytodos
+            SET is_completed = (1 - is_completed)
+            WHERE id = ?
+        `;
+        const [result] = await connection.execute(query, [id]);
+        return result.affectedRows; // 更新されたレコードの数を返す
+    } catch (error) {
+        console.error('TODO完了状態のトグルエラー:', error);
+        throw error;
+    } finally {
+        if (connection) connection.release();
+    }
 }
 
 

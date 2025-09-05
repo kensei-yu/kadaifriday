@@ -46,9 +46,10 @@ router.post('/delete/:id', async (req, res) => {
 router.post('/toggle/:id', async (req, res) => {
     const todoId = req.params.id;
     const toggleFlag = req.query._method;
-    console.log('トグルするTODOのID:', todoId);
-    console.log('トグルフラグ:', toggleFlag);
-    // 完了、未完了のトグル処理
+    if (toggleFlag === 'PUT') {
+        await todoModel.toggleTodo(todoId);
+    }
+    res.redirect('/todos'); // TODO一覧ページにリダイレクト
 });
 
 
