@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <h1>TODOリスト</h1>
+    <div>
+        <form action="" method="post">
+            TODOタイトル：<input type="text" name="title" id="">
+            <button type="submit">登録</button>
+        </form>
+    </div>
+    <div>
+        <% if (todos.length === 0) { %>
+            <p>TODOはまだありません。</p>
+        <% } else { %>
+       
+            <ul>
+            <% todos.forEach((todo, index) => { %>
+                <li>
+                    <%= todo.title %>
+                    <!-- 完了、未完了-->
+                    <form action="/todos/toggle/<%= todo.id %>?_method=PUT" method="post">
+                        <button type="submit">
+                            <% if(todo.is_completed === 0) { %>
+                                完了にする
+                            <% } else { %>
+                                未完了にする
+                            <% } %>
+                        </button>
+                    </form>
+                    <!-- 削除ボタン -->
+                    <form action="/todos/delete/<%= todo.id %>?_method=DELETE" method="post">
+                        <button type="submit">削除</button>
+                    </form>
+                </li>
+            <% }) %>
+            </ul>
+        <% } %>
+    </div>
+
+</body>
+</html>
